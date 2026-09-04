@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 
+@Service
 @RequiredArgsConstructor
 public class GithubOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserService userService;
@@ -18,7 +19,7 @@ public class GithubOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
+        OAuth2User githubUser = delegate.loadUser(userRequest);
 
         String accessToken = userRequest.getAccessToken().getTokenValue();
         String scopes = userRequest.getAccessToken().getScopes() != null
@@ -28,5 +29,4 @@ public class GithubOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = userService.upsertFromGitHub(githubUser.getAttributes() , accessToken , scopes);
         return new AppUserPrincipal(user ,githubUser.getAttributes() );
     }
-
 }
