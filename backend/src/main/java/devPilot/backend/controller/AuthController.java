@@ -1,7 +1,11 @@
 package devPilot.backend.controller;
 
+import devPilot.backend.dtos.UserResponse;
+import devPilot.backend.entity.User;
+import devPilot.backend.security.AppUserPrincipal;
 import devPilot.backend.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,5 +22,17 @@ public class AuthController {
     @GetMapping("/login-url")
     public Map<String, String> loginUrl() {
         return Map.of("url", "/oauth2/authorization/github");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> me() {
+        AppUserPrincipal principal = currentUser.require();
+        User user = principal.getUser();
+        return ResponseEntity.ok(new UserResponse(
+                user.getId(),
+                user.getGithubId(),
+                user.getGithubUserName(),
+                user.getDisplayName(),
+                user.getAvatarUrl()));
     }
 }
