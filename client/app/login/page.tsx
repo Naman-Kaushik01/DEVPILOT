@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
-import { getGithubLoginUrl } from '@/lib/api';
+import { getGithubLoginUrl } from "@/lib/api";
 import { useCurrentUser } from '@/hooks/use-auth';
 
 function LoginLoading(){
