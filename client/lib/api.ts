@@ -55,3 +55,10 @@ export async function apiFetch<T>(
 
   return res.json() as Promise<T>;
 }
+
+export const api = {
+    me: () => apiFetch<User>("/api/auth/me"),
+    logout: () => 
+        apiFetch<void>("/api/auth/logout", 
+            { method: "POST" }),
+};
