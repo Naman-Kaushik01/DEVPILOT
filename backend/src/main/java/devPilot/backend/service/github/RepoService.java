@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import devPilot.backend.dtos.IndexStatusResponse;
+import devPilot.backend.exceptions.NotFoundException;
 import devPilot.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +72,33 @@ public class RepoService {
                 .sorted((a, b) -> a.getFullName().compareToIgnoreCase(b.getFullName()))
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<RepositoryResponse> listStored(UUID userId) {
+        return repositoryRepository.findByUserIdOrderByFullNameAsc(userId).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Repository requireOwned(UUID repoId, UUID userId) {
+        return repositoryRepository.findByIdAndUserId(repoId, userId)
+                .orElseThrow(() -> new NotFoundException("Repository not found"));
+    }
+
+
+    @Transactional(readOnly = true)
+    public IndexStatusResponse status(UUID repoId, UUID userId) {
+        Repository repo = requireOwned(repoId, userId);
+        return new IndexStatusResponse(
+                repo.getId(),
+                repo.getIndexStatus(),
+                repo.getFilesTotal(),
+                repo.getFilesProcessed(),
+                repo.getChunkCount(),
+                repo.getIndexedAt(),
+                repo.getErrorMessage());
     }
 
     public RepositoryResponse toResponse(Repository repo) {
