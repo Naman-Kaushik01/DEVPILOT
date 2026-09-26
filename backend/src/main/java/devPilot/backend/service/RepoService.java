@@ -1,4 +1,4 @@
-package devPilot.backend.service.github;
+package devPilot.backend.service;
 
 
 import java.time.Instant;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import devPilot.backend.dtos.IndexStatusResponse;
 import devPilot.backend.exceptions.NotFoundException;
-import devPilot.backend.service.UserService;
+import devPilot.backend.service.github.GithubApiClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
