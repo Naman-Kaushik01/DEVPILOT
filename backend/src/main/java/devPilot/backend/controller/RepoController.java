@@ -1,5 +1,6 @@
 package devPilot.backend.controller;
 
+import devPilot.backend.dtos.IndexStatusResponse;
 import devPilot.backend.dtos.RepositoryResponse;
 import devPilot.backend.security.CurrentUser;
 import devPilot.backend.service.github.RepoService;
@@ -34,5 +35,10 @@ public class RepoController {
         return repoService.toResponse(repoService.requireOwned(id, userId));
     }
 
+    @GetMapping("/{id}/status")
+    public IndexStatusResponse status(@PathVariable UUID id) {
+        UUID userId = currentUser.require().getId();
+        return repoService.status(id, userId);
+    }
 
 }
