@@ -88,8 +88,17 @@ export async function apiFetch<T>(
 }
 
 export const api = {
-    me: () => apiFetch<User>("/api/auth/me"),
-    logout: () => 
-        apiFetch<void>("/api/auth/logout", 
-            { method: "POST" }),
+  me: () => apiFetch<User>("/api/auth/me"),
+  logout: () =>
+    apiFetch<void>("/api/auth/logout", {
+      method: "POST",
+    }),
+
+  listRepos: (refresh = true) =>
+    apiFetch<Repository[]>(`/api/repos?refresh=${refresh}`),
+  getRepo: (id: string) => apiFetch<Repository>(`/api/repos/${id}`),
+  startIndex: (id: string) =>
+    apiFetch<Repository>(`/api/repos/${id}/index`, { method: "POST" }),
+  indexStatus: (id: string) =>
+    apiFetch<IndexStatusResponse>(`/api/repos/${id}/status`),
 };
