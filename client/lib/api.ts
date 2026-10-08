@@ -1,9 +1,30 @@
+export type IndexStatus = "PENDING" | "INDEXING" | "READY" | "FAILED";
+
 export type User = {
   id: string;
   githubId: number;
   githubUsername: string;
   displayName: string;
   avatarUrl: string | null;
+};
+
+export type Repository = {
+  id: string;
+  githubRepoId: number;
+  owner: string;
+  name: string;
+  fullName: string;
+  isPrivate: boolean;
+  defaultBranch: string;
+  language: string | null;
+  htmlUrl: string | null;
+  description: string | null;
+  indexStatus: IndexStatus;
+  indexedAt: string | null;
+  chunkCount: number;
+  filesTotal: number;
+  filesProcessed: number;
+  errorMessage: string | null;
 };
 
 export class ApiError extends Error {
