@@ -27,6 +27,16 @@ export type Repository = {
   errorMessage: string | null;
 };
 
+export type IndexStatusResponse = {
+  repositoryId: string;
+  indexStatus: IndexStatus;
+  filesTotal: number;
+  filesProcessed: number;
+  chunkCount: number;
+  indexedAt: string | null;
+  errorMessage: string | null;
+};
+
 export class ApiError extends Error {
   status: number;
 
